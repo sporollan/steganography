@@ -1,6 +1,6 @@
 import argparse
 import multiprocessing as mp
-
+import cv2 as cv
 
 def get_args():
     parser = argparse.ArgumentParser()
