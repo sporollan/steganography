@@ -32,7 +32,8 @@ if __name__ == '__main__':
         pixel[1] -= img.shape[1]
         pixel[0] += 1
     msg_idx = 0
-    while msg_idx < len(msg): 
+    L = len(msg)
+    while msg_idx < L:
         for color in range(3):
             byte = format(img.item(pixel[0], pixel[1], color), '#010b')
             byte = list(byte)
@@ -42,12 +43,14 @@ if __name__ == '__main__':
             byte = int(byte, 2)
             img.itemset((pixel[0], pixel[1], color), byte) 
 
-            if msg_idx == len(msg):
+            if msg_idx == L:
                 break
         pixel[1] += args.key[1]
         while img.shape[1] <= pixel[1]:
             pixel[1] -= img.shape[1]
             pixel[0] += 1
-
+    
     if not cv.imwrite('encoded_image.png', img):
         raise Exception("Could not write image")
+    else:
+        print(f'key is {args.key[0]} {args.key[1]} {int(L/8)}')
