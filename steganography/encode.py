@@ -11,7 +11,7 @@ def get_args():
     parser.add_argument('-m', '--message', metavar='message', type=str,
                         help='Message Filename', required=True)
     parser.add_argument('-k', '--key', metavar='key', nargs=2, type=int,
-                        required=True, help='OFFSET INTERLEAVE')
+                        required=True, help='OFFSET INTERLEAVE in pixels')
     return parser.parse_args()
 
 
@@ -23,9 +23,12 @@ def show(img):
 if __name__ == '__main__':
     args = get_args()
     img = cv.imread(args.image)
-    msg = open(args.message, 'r').read().rstrip()
 
-    
+    msg = open(args.message, 'rb').read().rstrip()
+    msg = "".join([format(x, '#010b')[2:] for x in msg])
+    pixel = (0, 0)
+    msg_idx = 0
+
 
     if not cv.imwrite('encoded_image.png', img):
         raise Exception("Could not write image")
