@@ -1,5 +1,6 @@
 import argparse
 import multiprocessing as mp
+import numpy as np
 import cv2 as cv
 
 
@@ -9,6 +10,8 @@ def get_args():
                         help='Image Filename', required=True)
     parser.add_argument('-m', '--message', metavar='message', type=str,
                         help='Message Filename', required=True)
+    parser.add_argument('-k', '--key', metavar='key', nargs=2, type=int,
+                        required=True, help='OFFSET INTERLEAVE')
     return parser.parse_args()
 
 
@@ -22,7 +25,7 @@ if __name__ == '__main__':
     img = cv.imread(args.image)
     msg = open(args.message, 'r').read().rstrip()
 
-
+    
 
     if not cv.imwrite('encoded_image.png', img):
         raise Exception("Could not write image")
