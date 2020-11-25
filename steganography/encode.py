@@ -26,9 +26,28 @@ if __name__ == '__main__':
 
     msg = open(args.message, 'rb').read().rstrip()
     msg = "".join([format(x, '#010b')[2:] for x in msg])
-    pixel = (0, 0)
+    pixel = [0, 0]
+    pixel[1] += args.key[0]
+    while img.shape[1] <= pixel[1]:
+        pixel[1] -= img.shape[1]
+        pixel[0] += 1
     msg_idx = 0
+    while msg_idx < len(msg): 
+        for color in range(3):
+            byte = format(img.item(pixel[0], pixel[1], color), '#010b')
+            byte = list(byte)
+            byte[-1] = msg[msg_idx]
+            byte = ''.join(byte)
+            msg_idx += 1
+            byte = int(byte, 2)
+            img.itemset((pixel[0], pixel[1], color), byte) 
 
+            if msg_idx == len(msg):
+                break
+        pixel[1] += args.key[1]
+        while img.shape[1] <= pixel[1]:
+            pixel[1] -= img.shape[1]
+            pixel[0] += 1
 
     if not cv.imwrite('encoded_image.png', img):
         raise Exception("Could not write image")
